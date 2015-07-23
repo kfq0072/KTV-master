@@ -8,7 +8,6 @@
 
 #import "CollectionBottomCell.h"
 #import "NSManagedObject+helper.h"
-#import "CollectionRec.h"
 #import "CommandControler.h"
 @implementation CollectionBottomCell
 
@@ -23,30 +22,30 @@
 }
 - (IBAction)clicked_cancelCollection:(id)sender {
     
-    NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"CollectionRec"];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"number==%@",_oneSong.number]];
-    NSError *error;
-    NSArray *collections = [[Utility instanceShare].mainObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (collections.count>0) {
-        CollectionRec * lastRecord = [collections lastObject];
-        // 删除数据
-        [[Utility instanceShare].mainObjectContext deleteObject:lastRecord];
-        if ([lastRecord isDeleted]) {
-            [[Utility instanceShare]save:nil];
-            if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
-            [self.delegate deleteCollectionSong:_oneSong result:KMessageSuccess];
-            }
-            
-        } else {
-            if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
-            [self.delegate deleteCollectionSong:_oneSong result:KMessageWarning];
-            }
-        }
-    } else {
-        if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
-            [self.delegate deleteCollectionSong:_oneSong result:KMessageStyleInfo];
-        }
-    }
+//    NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"CollectionRec"];
+//    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"number==%@",_oneSong.number]];
+//    NSError *error;
+//    NSArray *collections = [[Utility instanceShare].mainObjectContext executeFetchRequest:fetchRequest error:&error];
+//    if (collections.count>0) {
+//        CollectionRec * lastRecord = [collections lastObject];
+//        // 删除数据
+//        [[Utility instanceShare].mainObjectContext deleteObject:lastRecord];
+//        if ([lastRecord isDeleted]) {
+//            [[Utility instanceShare]save:nil];
+//            if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
+//            [self.delegate deleteCollectionSong:_oneSong result:KMessageSuccess];
+//            }
+//            
+//        } else {
+//            if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
+//            [self.delegate deleteCollectionSong:_oneSong result:KMessageWarning];
+//            }
+//        }
+//    } else {
+//        if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
+//            [self.delegate deleteCollectionSong:_oneSong result:KMessageStyleInfo];
+//        }
+//    }
 }
 
 - (IBAction)clicked_priory:(id)sender {

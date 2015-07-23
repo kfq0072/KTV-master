@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "Utility.h"
+#import "HuToast.h"
+@class Song;
+@protocol SongDelegate <NSObject>
+@optional
+- (void)addSongToCollection:(Song*)oneSong result:(KMessageStyle)result;
+- (void)deleteCollectionSong:(Song*)oneSong result:(KMessageStyle)result;
+- (void)dingGeFromCollection:(Song*)oneSong result:(KMessageStyle)result;
+- (void)cutSongFromCollection:(Song*)oneSong result:(KMessageStyle)result;
+@end
+
 @interface Song : NSObject
 @property (nonatomic, copy) NSString * addtime;
 @property (nonatomic, copy) NSString * bihua;
@@ -26,5 +36,12 @@
 @property (nonatomic, copy) NSString * stype;
 @property (nonatomic, copy) NSString * volume;
 @property (nonatomic, copy) NSString * word;
+@property(nonatomic,weak)id<SongDelegate> delegate;
+
+- (void)insertSongToCollectionTable;
+- (void)deleteSongFromCollectionTable;
+- (void)cutSong;
+- (void)prioritySong;
+
 
 @end

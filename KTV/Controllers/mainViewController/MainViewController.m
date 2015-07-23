@@ -23,7 +23,6 @@
 #import "BBBadgeBarButtonItem.h"
 #import "MBProgressHUD.h"
 #import "HuToast.h"
-static BOOL showToast=YES;
 
 @interface MainViewController ()<UISearchBarDelegate,ScanCodeDelegate> {
     UIButton *geshouBtn;
@@ -61,7 +60,9 @@ static BOOL showToast=YES;
     HUD.detailsLabelColor=[UIColor greenColor];
     [HUD show:YES];
     [[Utility instanceShare]addIntoDataSource:^(BOOL Completed) {
-        [HUD removeFromSuperview];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUD hide:YES];
+        });
     }];
 }
 

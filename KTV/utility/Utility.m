@@ -241,7 +241,7 @@ static Utility *shareInstance=nil;
   });
 }
 - (BOOL)startTodoInitailizationData {
-    [self initneedDownLoadFilesPathAndDownLoad];
+//    [self initneedDownLoadFilesPathAndDownLoad];
     for (NSString *oneFilePath in needImportFilefullPaths) {
         NSString *fileName=[oneFilePath lastPathComponent];
         if ([fileName isEqualToString:@"songlist.txt"]) {
@@ -252,15 +252,16 @@ static Utility *shareInstance=nil;
         }else if([fileName isEqualToString:@"typelist.txt"]) {
             [self importDataForType:oneFilePath];
         } else if ([fileName isEqualToString:@"orderdata.txt"]) {
-//            [self importDataForOrder:oneFilePath];
+            [self importDataForOrder:oneFilePath];
         }
     }
+    [self initCollectionTable];
     return YES;
 }
 
 - (NSError*)importDataForSongs:(NSString*)txtFilePath {
     //check and create Table
-    NSString *sqlCreateTable =@"CREATE TABLE IF NOT EXISTS SongTable (number TEXT,songname TEXT,singer TEXT,singer1 TEXT,songpiy TEXT,word TEXT,language TEXT,volume TEXT,channel TEXT,sex TEXT,stype TEXT,newsong TEXT,movie TEXT,pathid TEXT,bihua TEXT,addtime TEXT,spath TEXT)";
+    NSString *sqlCreateTable =@"CREATE TABLE IF NOT EXISTS SongTable (number TEXT PRIMARY KEY,songname TEXT,singer TEXT,singer1 TEXT,songpiy TEXT,word TEXT,language TEXT,volume TEXT,channel TEXT,sex TEXT,stype TEXT,newsong TEXT,movie TEXT,pathid TEXT,bihua TEXT,addtime TEXT,spath TEXT)";
     
     BOOL res = [_db executeUpdate:sqlCreateTable];
     if (!res) {
@@ -537,6 +538,19 @@ static Utility *shareInstance=nil;
     fclose(fn);
     free(orderadd);
     return nil;
+}
+
+- (BOOL)initCollectionTable {
+    //check and create Table
+    NSString *sqlCreateTable =@"CREATE TABLE IF NOT EXISTS CollectionTable (number TEXT PRIMARY KEY,songname TEXT,singer TEXT,singer1 TEXT,songpiy TEXT,word TEXT,language TEXT,volume TEXT,channel TEXT,sex TEXT,stype TEXT,newsong TEXT,movie TEXT,pathid TEXT,bihua TEXT,addtime TEXT,spath TEXT)";
+    BOOL res = [_db executeUpdate:sqlCreateTable];
+    if (!res) {
+        NSLog(@"error when creating TypeTable table");
+        
+    } else {
+        NSLog(@"success to creating TypeTable table");
+    }
+    return res;
 }
 
 

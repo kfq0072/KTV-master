@@ -12,13 +12,12 @@
 #define BOTTOMCELLIDENTIFY @"SongBottomCell"
 #import "SongBottomCell.h"
 #import "YiDianViewController.h"
-#import "Song.h"
-#import "Utility.h"
 #import "BBBadgeBarButtonItem.h"
 #import "MBProgressHUD.h"
 #import "MJRefresh.h"
+#import "Song.h"
 
-@interface newSongViewController ()<MBProgressHUDDelegate,SongListSongDelegate> {
+@interface newSongViewController ()<MBProgressHUDDelegate,SongDelegate> {
     NSInteger _previousRow;
     UIRefreshControl * bb;
     NSMutableArray *dataList;
@@ -136,8 +135,8 @@
             cell = [nib objectAtIndex:0];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             cell.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"song_bt_bg"]];
-            cell.delegate=self;
             cell.oneSong=dataList[_previousRow];
+            cell.oneSong.delegate=self;
         }
         return cell;
     } else {
@@ -281,7 +280,7 @@
 }
 
 #pragma mark - SongBottom delegate
-- (void)addCollectionSong:(Song *)oneSong result:(KMessageStyle)result {
+- (void)addSongToCollection:(Song *)oneSong result:(KMessageStyle)result {
     [myToast dissmiss];
     switch (result) {
         case KMessageSuccess: {

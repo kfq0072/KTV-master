@@ -7,8 +7,6 @@
 //
 
 #import "YiDianBottomCell.h"
-#import "CollectionRec.h"
-#import "NSManagedObject+helper.h"
 #import "CommandControler.h"
 @implementation YiDianBottomCell
 
@@ -58,39 +56,7 @@
 }
 
 - (void)addSongToCollection {
-    [CollectionRec async:^id(NSManagedObjectContext *ctx, NSString *className) {
-        NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"CollectionRec"];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"number==%@",_oneSong.number]];
-        NSError *error;
-        NSArray *tmpArray = [ctx executeFetchRequest:fetchRequest error:&error];
-        if (error) {
-            if ([self.delegate respondsToSelector:@selector(addCollectionSong:result:)]) {
-                [self.delegate addCollectionSong:_oneSong result:KMessageStyleError];
-            }
-            return error;
-        }else{
-            return tmpArray;
-        }
-        
-    } result:^(NSArray *result, NSError *error) {
-        if (result.count<=0) {
-            int rcid=[[[NSUserDefaults standardUserDefaults]objectForKey:@"COLLECTION_RCID"] intValue];
-            NSNumber *newRcid=[NSNumber numberWithInt:rcid+1];
-            NSManagedObject  *oneRecord=[NSEntityDescription insertNewObjectForEntityForName:@"CollectionRec" inManagedObjectContext:[Utility instanceShare].mainObjectContext];
-            [oneRecord setValue:[NSNumber numberWithInt:rcid+1] forKey:@"rcid"];
-            [oneRecord setValue:_oneSong.songname forKey:@"sname"];
-            [oneRecord setValue:_oneSong.number forKey:@"number"];
-            [[NSUserDefaults standardUserDefaults]setValue:newRcid forKey:@"COLLECTION_RCID"];
-            [[Utility instanceShare]save:nil];
-            if ([self.delegate respondsToSelector:@selector(addCollectionSong:result:)]) {
-                [self.delegate addCollectionSong:_oneSong result:KMessageSuccess];
-            }
-        } else {
-            if ([self.delegate respondsToSelector:@selector(addCollectionSong:result:)]) {
-                [self.delegate addCollectionSong:_oneSong result:KMessageStyleInfo];
-            }
-        }
-    }];
+    [_oneSong insertSongToCollectionTable];
 }
 
 @end

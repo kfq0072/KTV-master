@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CollectionRec.h"
+#import "Song.h"
 @interface CollectionViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *songName;
 @property (weak, nonatomic) IBOutlet UIImageView *collectionFlagView;
 @property (weak, nonatomic) IBOutlet UIImageView *sanjiaoxing;
 @property (assign,nonatomic)BOOL opened;
 @property (weak,nonatomic)UIBarButtonItem *buttonitem;
-@property(nonatomic,weak)CollectionRec *oneCollectionRec;
+@property(nonatomic,weak)Song *oneSong;
 - (IBAction)addSong:(id)sender;
 
 @end

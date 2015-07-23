@@ -17,12 +17,10 @@
 #import "SettingViewController.h"
 #import "BokongView.h"
 #import "SoundViewController.h"
-#import "CollectionRec.h"
-#import "NSManagedObject+helper.h"
 #import "MBProgressHUD.h"
 #import "Song.h"
 
-@interface CollectionViewController ()<CollectionSongDelegate> {
+@interface CollectionViewController ()<SongDelegate> {
     NSInteger _previousRow;
     HuToast *myToast;
     
@@ -62,22 +60,31 @@
 }
 
 - (void)initializeTableContent {
-    [CollectionRec async:^id(NSManagedObjectContext *ctx, NSString *className) {
-        NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"CollectionRec"];
-        NSSortDescriptor *sortDescriptor=[NSSortDescriptor sortDescriptorWithKey:@"rcid" ascending:NO];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        NSError *error;
-        NSArray *tmpArray = [ctx executeFetchRequest:fetchRequest error:&error];
-        if (error) {
-            return error;
-        }else{
-            return tmpArray;
-        }
-        
-    } result:^(NSArray *result, NSError *error) {
-        self.dataList = [result mutableCopy];
+    FMResultSet *rs=[[Utility instanceShare].db executeQuery:@"select * from CollectionTable"];
+    while ([rs next]) {
+        Song *oneSong=[[Song alloc]init];
+        oneSong.addtime = [rs stringForColumn:@"addtime"];
+        oneSong.bihua = [rs stringForColumn:@"bihua"];
+        oneSong.channel = [rs stringForColumn:@"channel"];
+        oneSong.language = [rs stringForColumn:@"language"];
+        oneSong.movie = [rs stringForColumn:@"movie"];
+        oneSong.newsong = [rs stringForColumn:@"newsong"];
+        oneSong.number = [rs stringForColumn:@"number"];
+        oneSong.pathid = [rs stringForColumn:@"pathid"];
+        oneSong.sex = [rs stringForColumn:@"sex"];
+        oneSong.singer = [rs stringForColumn:@"singer"];
+        oneSong.singer1 = [rs stringForColumn:@"singer1"];
+        oneSong.songname = [rs stringForColumn:@"songname"];
+        oneSong.songpiy = [rs stringForColumn:@"songpiy"];
+        oneSong.spath = [rs stringForColumn:@"spath"];
+        oneSong.stype = [rs stringForColumn:@"stype"];
+        oneSong.volume = [rs stringForColumn:@"volume"];
+        oneSong.word = [rs stringForColumn:@"word"];
+        [_dataList addObject:oneSong];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
-    }];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
@@ -183,15 +190,16 @@
             cell = [nib objectAtIndex:0];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             cell.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"song_bt_bg"]];
-            cell.delegate=self;
             //cancel collection
             cell.oneSong=self.dataList[_previousRow];
+            cell.oneSong.delegate=self;
+
             
         }
         return cell;
     } else {
         CollectionViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TOPCELLIDENTIFY forIndexPath:indexPath];
-        cell.oneCollectionRec=self.dataList[indexPath.row];
+        cell.oneSong=self.dataList[indexPath.row];
         cell.buttonitem=self.navigationItem.rightBarButtonItem;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor=[UIColor clearColor];

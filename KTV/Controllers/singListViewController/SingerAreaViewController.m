@@ -61,6 +61,7 @@
         oneType.ztypeid = [rs stringForColumn:@"typeid"];
         oneType.ztypename = [rs stringForColumn:@"typename"];
         NSLog(@"oneSong:%@,%@,%@",oneType.ztype,oneType.ztypeid,oneType.ztypename);
+        if ([oneType.ztypename isEqualToString:@"全部"]) continue;
         [dataList addObject:oneType];
     }
     

@@ -26,6 +26,7 @@
 
 
 - (IBAction)addSong:(id)sender {
+    //没有检查是否添加成功
     if (self.buttonitem && self.oneSong.number.length > 0) {
         CommandControler *cmd=[[CommandControler alloc]init];
         [cmd sendCmd_Diange:self.oneSong.number];

@@ -13,14 +13,13 @@
 #import "SongBottomCell.h"
 #import "YiDianViewController.h"
 #import "Song.h"
-#import "NSManagedObject+helper.h"
 #import "BBBadgeBarButtonItem.h"
 #import "SettingViewController.h"
 #import "BokongView.h"
 #import "SoundViewController.h"
 #import "MBProgressHUD.h"
 #import "CommandControler.h"
-@interface SongListViewController ()<SongListSongDelegate>
+@interface SongListViewController ()<SongDelegate>
 {
     NSMutableArray *dataList;
     NSInteger _previousRow;
@@ -75,24 +74,6 @@
 }
 
 - (void)initializeTableContent {
-//    [Song async:^id(NSManagedObjectContext *ctx, NSString *className) {
-//        NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"Song"];
-//        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"singer==%@",_singerName]];
-//        NSSortDescriptor *sortDescriptor=[NSSortDescriptor sortDescriptorWithKey:@"songname" ascending:NO];
-//        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-//        NSError *error;
-//        NSArray *tmpArray = [ctx executeFetchRequest:fetchRequest error:&error];
-//        if (error) {
-//            return error;
-//        }else{
-//            return tmpArray;
-//        }
-//        
-//    } result:^(NSArray *result, NSError *error) {
-//        dataList = [result mutableCopy];
-//        [self.tableView reloadData];
-//    }];
-    
     NSString *singerName=[[Utility instanceShare]encodeBase64:_singerName];
     NSString *sqlStr= [NSString stringWithFormat:@"select * from SongTable where singer='%@' order by singer",singerName];
     FMResultSet *rs=[[Utility instanceShare].db executeQuery:sqlStr];
@@ -213,9 +194,8 @@
             cell = [nib objectAtIndex:0];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             cell.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"song_bt_bg"]];
-            cell.delegate=self;
             cell.oneSong=dataList[_previousRow];
-            
+            cell.oneSong.delegate=self;
         }
         return cell;
     } else {
@@ -292,7 +272,7 @@
 
 
 #pragma mark - SongBottom delegate
-- (void)addCollectionSong:(Song *)oneSong result:(KMessageStyle)result {
+- (void)addSongToCollection:(Song *)oneSong result:(KMessageStyle)result {
     [myToast dissmiss];
     switch (result) {
         case KMessageSuccess: {

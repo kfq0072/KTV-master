@@ -8,15 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Song.h"
-#import "HuToast.h"
-@protocol CollectionSongDelegate <NSObject>
-@required
-- (void)deleteCollectionSong:(Song*)oneSong result:(KMessageStyle)result;
-- (void)dingGeFromCollection:(Song*)oneSong result:(KMessageStyle)result;
-- (void)cutSongFromCollection:(Song*)oneSong result:(KMessageStyle)result;
-@end
 
 @interface CollectionBottomCell : UITableViewCell
 @property(nonatomic,weak)Song *oneSong;
-@property(nonatomic,weak)id<CollectionSongDelegate> delegate;
+@property(nonatomic,weak)id<SongDelegate> delegate;
 @end

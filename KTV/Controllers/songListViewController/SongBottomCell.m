@@ -6,8 +6,6 @@
 //  Copyright (c) 2015年 stevenhu. All rights reserved.
 //
 #import "SongBottomCell.h"
-#import "CollectionRec.h"
-#import "NSManagedObject+helper.h"
 #import "CommandControler.h"
 @interface SongBottomCell ()
 @property (weak, nonatomic) IBOutlet UIButton *collectionrec;
@@ -28,65 +26,18 @@
 }
 
 - (IBAction)clicked_collection:(id)sender {
-    [self addSongToCollection];
+    [_oneSong insertSongToCollectionTable];
 }
 
 
 - (IBAction)clicked_priority:(id)sender {
-    if (self.oneSong.number.length > 0) {
-        CommandControler *cmd=[[CommandControler alloc]init];
-        [cmd sendCmd_DiangeToTop:self.oneSong.number];
-        if ([self.delegate respondsToSelector:@selector(dingGeFromCollection:result:)]) {
-            [self.delegate dingGeFromCollection:_oneSong result:KMessageSuccess];
-        }
-    }
+    [_oneSong prioritySong];
 }
 
 - (IBAction)clicked_cutsong:(id)sender {
-    if (self.oneSong.number.length > 0) {
-        CommandControler *cmd=[[CommandControler alloc]init];
-        [cmd sendCmd_switchSong];
-        if ([self.delegate respondsToSelector:@selector(cutSongFromCollection:result:)]) {
-            [self.delegate cutSongFromCollection:_oneSong result:KMessageSuccess];
-        }
-    }
+    [_oneSong cutSong];
 }
 
-- (void)addSongToCollection {
-    [CollectionRec async:^id(NSManagedObjectContext *ctx, NSString *className) {
-        NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"CollectionRec"];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"number==%@",_oneSong.number]];
-        NSError *error;
-        NSArray *tmpArray = [ctx executeFetchRequest:fetchRequest error:&error];
-        if (error) {
-            if ([self.delegate respondsToSelector:@selector(addCollectionSong:result:)]) {
-                [self.delegate addCollectionSong:_oneSong result:KMessageStyleError];
-            }
-            return error;
-        }else{
-            return tmpArray;
-        }
-        
-    } result:^(NSArray *result, NSError *error) {
-        if (result.count<=0) {
-            int rcid=[[[NSUserDefaults standardUserDefaults]objectForKey:@"COLLECTION_RCID"] intValue];
-            NSNumber *newRcid=[NSNumber numberWithInt:rcid+1];
-            NSManagedObject  *oneRecord=[NSEntityDescription insertNewObjectForEntityForName:@"CollectionRec" inManagedObjectContext:[Utility instanceShare].mainObjectContext];
-            [oneRecord setValue:[NSNumber numberWithInt:rcid+1] forKey:@"rcid"];
-            [oneRecord setValue:_oneSong.songname forKey:@"sname"];
-            [oneRecord setValue:_oneSong.number forKey:@"number"];
-            [[NSUserDefaults standardUserDefaults]setValue:newRcid forKey:@"COLLECTION_RCID"];
-            [[Utility instanceShare]save:nil];
-            if ([self.delegate respondsToSelector:@selector(addCollectionSong:result:)]) {
-                [self.delegate addCollectionSong:_oneSong result:KMessageSuccess];
-            }
-        } else {
-            if ([self.delegate respondsToSelector:@selector(addCollectionSong:result:)]) {
-                [self.delegate addCollectionSong:_oneSong result:KMessageStyleInfo];
-            }
-        }
-    }];
-}
 
 //
 //- (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event {

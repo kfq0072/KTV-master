@@ -84,7 +84,7 @@ typedef void(^Completed)(BOOL Completed);
 + (NSString*)shouZiFu:(NSString*)string;
 + (iphoneModel)whatIphoneDevice;
 + (UIColor *)colorWithHexString:(NSString *)stringToConvert;
-//core data
+// DabaBase
 - (void)addIntoDataSource:(Completed)completed;
 - (void) setupEnvModel:(NSString *)model DbFile:(NSString*)filename;
 - (NSManagedObjectContext*)createPrivateObjectContext;
