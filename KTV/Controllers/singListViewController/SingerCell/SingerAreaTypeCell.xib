@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="KGk-i7-Jjw" customClass="SingerAreaTypeCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Oe-1f-n0d">
+                        <rect key="frame" x="18" y="4" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="U9W-bQ-w4V"/>
+                            <constraint firstAttribute="height" constant="50" id="iAJ-yn-RQC"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUu-jK-acb">
+                        <rect key="frame" x="91" y="18" width="160" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="160" id="CYL-ww-2UZ"/>
+                            <constraint firstAttribute="height" constant="22" id="EYb-o3-AVO"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="nUu-jK-acb" secondAttribute="centerY" id="5ft-nX-QWK"/>
+                    <constraint firstItem="7Oe-1f-n0d" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="9Rr-i0-nty"/>
+                    <constraint firstItem="nUu-jK-acb" firstAttribute="leading" secondItem="7Oe-1f-n0d" secondAttribute="trailing" constant="23" id="EOf-yL-dTb"/>
+                    <constraint firstAttribute="centerY" secondItem="7Oe-1f-n0d" secondAttribute="centerY" id="spw-Q0-gfG"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="SingerLabel" destination="nUu-jK-acb" id="XgI-2n-HhH"/>
+                <outlet property="headImageV" destination="7Oe-1f-n0d" id="JuU-3c-d38"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

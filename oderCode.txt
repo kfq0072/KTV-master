@@ -1,0 +1,83 @@
+//collection
+struct collecsrec{
+        char  number[8];
+        char  sname[20] ;
+        int rcid;  //id
+};
+
+//ÅÅÐÐ
+struct orderrec{
+    char  number[8];
+    int rcid;  //Ó›ä›Î»ÖÃ
+    int order; //
+};
+
+void readorder(char * flname,int songs)
+{
+    struct orderrec  *orderadd ;
+    stcounts[5]=0;
+    FILE * fn=fopen(flname,"r");
+    if (fn==NULL){
+       orderlist=(char **) calloc (500, sizeof(char *));
+       return ;
+    }
+    orderlist=(char **) calloc (songs, sizeof(char *));
+
+    while (1)
+    {
+       orderadd=( struct orderrec *) calloc (1, sizeof(struct orderrec ));
+       if(fread(orderadd,sizeof(struct orderrec),1,fn)!=1)
+       {
+           break;
+       }
+       if ((orderadd->rcid>-1) && (orderadd->rcid<curaddsong))
+       {
+//Ð´table
+
+       }
+    }
+
+    free(mtmp);
+    fclose(fn);
+
+}
+
+void readcollection(char * flname)
+{
+    struct collecsrec  * rditem ;
+    stcounts[6]=0;
+    FILE * fn=fopen(flname,"r");
+    if (fn==NULL){
+       collectionlist=(char **) calloc (1, sizeof(char *));
+       return ;
+    }
+    int scount=0;
+    rditem=( struct collecsrec *) calloc (1, sizeof(struct collecsrec ));
+    while (1)
+    {
+        scount++ ;
+        if(fread(rditem,sizeof(struct collecsrec),1,fn)!=1)
+        break;
+
+    }
+    collectionlist=(char **) calloc (scount+1, sizeof(char *));
+    fclose(fn);
+    fn=fopen(flname,"r");
+
+    while (1)
+    {
+        rditem=( struct collecsrec *) calloc (1, sizeof(struct collecsrec ));
+        if(fread(rditem,sizeof(struct collecsrec),1,fn)!=1)
+       {
+           break;
+       }
+//Ð´table
+
+    }
+    fclose(fn);
+
+
+
+
+}
+
