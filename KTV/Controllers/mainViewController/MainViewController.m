@@ -69,9 +69,10 @@
 - (void)copyFile {
     NSFileManager *fileManager=[NSFileManager defaultManager];
     NSString *sourcePath=[[NSBundle mainBundle]pathForResource:@"KTV-master.zip" ofType:nil];
-    NSString *distancePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:@"KTV_Master.zip"];
-    [fileManager copyItemAtPath:sourcePath toPath:distancePath error:nil];
-    
+    if ([fileManager fileExistsAtPath:sourcePath]) {
+        NSString *distancePath=[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:@"KTV_Master.zip"];
+        [fileManager copyItemAtPath:sourcePath toPath:distancePath error:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

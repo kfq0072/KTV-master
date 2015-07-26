@@ -251,7 +251,7 @@
 
 - (void)initializeTableContent:(NSString*)searchStr {
     
-     NSString *enCodeSearchStr = [[Utility instanceShare] encodeBase64:searchStr];
+     NSString *enCodeSearchStr = [Utility encodeBase64:searchStr];
     NSString *sql = nil;
       [self.dataList removeAllObjects];
     if (_searchSelectIndex == searchAll) {
@@ -265,7 +265,7 @@
         FMResultSet * rs = [_searchDb executeQuery:sql];
         while ([rs next]) {
             NSString *codeSongName = [rs stringForColumn:@"songname"];
-             NSString *songName= [[Utility instanceShare] decodeBase64:codeSongName];
+             NSString *songName= [Utility  decodeBase64:codeSongName];
           
             [self.dataList addObject:songName];
            
@@ -277,7 +277,7 @@
         FMResultSet * rs = [_searchDb executeQuery:sql];
         while ([rs next]) {
             NSString *codeSingerName = [rs stringForColumn:@"singer"];
-            NSString *singerName= [[Utility instanceShare] decodeBase64:codeSingerName];
+            NSString *singerName= [Utility decodeBase64:codeSingerName];
             [self.dataList addObject:singerName];
         }
         [_searchDb close];

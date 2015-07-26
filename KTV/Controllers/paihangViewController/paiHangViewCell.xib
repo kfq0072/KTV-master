@@ -28,7 +28,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pHS-8T-8PZ">
-                        <rect key="frame" x="88" y="30" width="133" height="21.5"/>
+                        <rect key="frame" x="73" y="30" width="133" height="21.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <nil key="highlightedColor"/>
@@ -62,7 +62,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="61I-Ns-u1t">
-                        <rect key="frame" x="88" y="5" width="133" height="21.5"/>
+                        <rect key="frame" x="73" y="5" width="133" height="21.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="133" id="i7Z-Nd-1hf"/>
                         </constraints>
@@ -76,9 +76,9 @@
                     <constraint firstItem="61I-Ns-u1t" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-3" id="Hu6-nz-2fI"/>
                     <constraint firstItem="RBB-dC-dNM" firstAttribute="bottom" secondItem="4CN-cz-vQh" secondAttribute="bottom" id="LbY-a5-f78"/>
                     <constraint firstAttribute="centerX" secondItem="RBB-dC-dNM" secondAttribute="centerX" id="MWm-0p-hFw"/>
-                    <constraint firstItem="v6I-Ow-Pla" firstAttribute="leading" secondItem="61I-Ns-u1t" secondAttribute="trailing" constant="25" id="Ooy-yO-j9H"/>
+                    <constraint firstItem="v6I-Ow-Pla" firstAttribute="leading" secondItem="61I-Ns-u1t" secondAttribute="trailing" constant="40" id="Ooy-yO-j9H"/>
                     <constraint firstAttribute="bottomMargin" secondItem="v6I-Ow-Pla" secondAttribute="bottom" constant="5" id="bHn-PS-8Il"/>
-                    <constraint firstItem="v6I-Ow-Pla" firstAttribute="leading" secondItem="pHS-8T-8PZ" secondAttribute="trailing" constant="25" id="eXV-jv-Q1y"/>
+                    <constraint firstItem="v6I-Ow-Pla" firstAttribute="leading" secondItem="pHS-8T-8PZ" secondAttribute="trailing" constant="40" id="eXV-jv-Q1y"/>
                     <constraint firstAttribute="bottom" secondItem="4CN-cz-vQh" secondAttribute="bottom" id="fo6-ey-PCV"/>
                     <constraint firstItem="4CN-cz-vQh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="h8L-TR-c0i"/>
                     <constraint firstItem="61I-Ns-u1t" firstAttribute="width" secondItem="pHS-8T-8PZ" secondAttribute="width" id="hzz-XK-eqW"/>

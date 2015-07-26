@@ -241,7 +241,7 @@ static Utility *shareInstance=nil;
   });
 }
 - (BOOL)startTodoInitailizationData {
-//    [self initneedDownLoadFilesPathAndDownLoad];
+    [self initneedDownLoadFilesPathAndDownLoad];
     for (NSString *oneFilePath in needImportFilefullPaths) {
         NSString *fileName=[oneFilePath lastPathComponent];
         if ([fileName isEqualToString:@"songlist.txt"]) {
@@ -295,7 +295,7 @@ static Utility *shareInstance=nil;
                         continue;
                     }
       
-                    NSString *insertSql1= [NSString stringWithFormat:@"INSERT INTO SongTable (number,songname,singer,singer1,songpiy,word,language,volume,channel,sex,stype,newsong,movie,pathid,bihua,addtime,spath)VALUES ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",[self encodeBase64:lineArry[0]],[self encodeBase64:lineArry[1]],[self encodeBase64:lineArry[2]],[self encodeBase64:lineArry[3]],[self encodeBase64:lineArry[4]],[self encodeBase64:lineArry[5]],[self encodeBase64:lineArry[6]],[self encodeBase64:lineArry[7]],[self encodeBase64:lineArry[8]],[self encodeBase64:lineArry[9]],[self encodeBase64:lineArry[10]],[self encodeBase64:lineArry[11]],[self encodeBase64:lineArry[12]],[self encodeBase64:lineArry[13]],[self encodeBase64:lineArry[14]],[self encodeBase64:lineArry[15]],[self encodeBase64:lineArry[16]]];
+                    NSString *insertSql1= [NSString stringWithFormat:@"INSERT INTO SongTable (number,songname,singer,singer1,songpiy,word,language,volume,channel,sex,stype,newsong,movie,pathid,bihua,addtime,spath)VALUES ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",[Utility encodeBase64:lineArry[0]],[Utility encodeBase64:lineArry[1]],[Utility encodeBase64:lineArry[2]],[Utility encodeBase64:lineArry[3]],[Utility encodeBase64:lineArry[4]],[Utility encodeBase64:lineArry[5]],[Utility encodeBase64:lineArry[6]],[Utility encodeBase64:lineArry[7]],[Utility encodeBase64:lineArry[8]],[Utility encodeBase64:lineArry[9]],[Utility encodeBase64:lineArry[10]],[Utility encodeBase64:lineArry[11]],[Utility encodeBase64:lineArry[12]],[Utility encodeBase64:lineArry[13]],[Utility encodeBase64:lineArry[14]],[Utility encodeBase64:lineArry[15]],[Utility encodeBase64:lineArry[16]]];
                     if (![_db executeUpdate:insertSql1]) {
                         NSLog(@"插入失败1");
                     }
@@ -369,7 +369,7 @@ static Utility *shareInstance=nil;
                         NSLog(@"line error %d",fromIndex);
                         continue;
                     }
-                    NSString *insertSql1=[NSString stringWithFormat:@"INSERT INTO SingerTable (singer,pingyin,s_bi_hua,area)VALUES ('%@','%@','%@','%@')",[self encodeBase64:lineArry[0]],[self encodeBase64:lineArry[1]],[self encodeBase64:lineArry[2]],[self encodeBase64:lineArry[3]]];
+                    NSString *insertSql1=[NSString stringWithFormat:@"INSERT INTO SingerTable (singer,pingyin,s_bi_hua,area)VALUES ('%@','%@','%@','%@')",[Utility encodeBase64:lineArry[0]],[Utility encodeBase64:lineArry[1]],[Utility encodeBase64:lineArry[2]],[Utility encodeBase64:lineArry[3]]];
                     if (![_db executeUpdate:insertSql1]) {
                         NSLog(@"插入失败1");
                     }
@@ -423,7 +423,7 @@ static Utility *shareInstance=nil;
             if  (lineArry.count !=3) {
                 continue;
             }
-            NSString *insertSql= [NSString stringWithFormat:@"INSERT INTO TypeTable (typeid,type,typename)VALUES ('%@','%@','%@')",[self encodeBase64:lineArry[0]],[self encodeBase64:lineArry[1]],[self encodeBase64:lineArry[2]]];
+            NSString *insertSql= [NSString stringWithFormat:@"INSERT INTO TypeTable (typeid,type,typename)VALUES ('%@','%@','%@')",[Utility encodeBase64:lineArry[0]],[Utility encodeBase64:lineArry[1]],[Utility encodeBase64:lineArry[2]]];
             [_db executeUpdate:insertSql];
             
         }
@@ -449,10 +449,8 @@ static Utility *shareInstance=nil;
                     if  (lineArry.count !=3) {
                         continue;
                     }
-                    NSString *insertSql= [NSString stringWithFormat:@"INSERT INTO TypeTable (typeid,type,typename)VALUES ('%@','%@','%@')",[self encodeBase64:lineArry[0]],[self encodeBase64:lineArry[1]],[self encodeBase64:lineArry[2]]];
-                    [_db executeUpdate:insertSql];
-                    NSString *insertSql1=[NSString stringWithFormat:@"INSERT INTO SingerTable (singer,pingyin,s_bi_hua,area)VALUES ('%@','%@','%@','%@')",[self encodeBase64:lineArry[0]],[self encodeBase64:lineArry[1]],[self encodeBase64:lineArry[2]],[self encodeBase64:lineArry[3]]];
-                    if (![_db executeUpdate:insertSql1]) {
+                    NSString *insertSql= [NSString stringWithFormat:@"INSERT INTO TypeTable (typeid,type,typename)VALUES ('%@','%@','%@')",[Utility encodeBase64:lineArry[0]],[Utility encodeBase64:lineArry[1]],[Utility encodeBase64:lineArry[2]]];
+                    if (![_db executeUpdate:insertSql]) {
                         NSLog(@"插入失败1");
                     }
       
@@ -530,7 +528,7 @@ static Utility *shareInstance=nil;
             continue;
         }
         //        NSLog(@"\n%@\n%@\n%@",number,rcid,order);
-        NSString *insertSql= [NSString stringWithFormat:@"INSERT INTO OrderTable (number,rcid,ordername)VALUES ('%@','%@','%@')",[self encodeBase64:number],[self encodeBase64:rcid],[self encodeBase64:order]];
+        NSString *insertSql= [NSString stringWithFormat:@"INSERT INTO OrderTable (number,rcid,ordername)VALUES ('%@','%@','%@')",[Utility encodeBase64:number],[Utility encodeBase64:rcid],[Utility encodeBase64:order]];
         [_db executeUpdate:insertSql];
         free(mynumber);
     }
@@ -647,11 +645,11 @@ static Utility *shareInstance=nil;
 }
 
 
-- (NSString*)encodeBase64:(NSString*)decodestr {
++ (NSString*)encodeBase64:(NSString*)decodestr {
    return [[decodestr dataUsingEncoding:NSUTF8StringEncoding]base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-- (NSString*)decodeBase64:(NSString*)encodeStr {
++ (NSString*)decodeBase64:(NSString*)encodeStr {
     NSData *dataFromBase64String=[[NSData alloc]initWithBase64EncodedString:encodeStr options:NSDataBase64DecodingIgnoreUnknownCharacters];
     return [[NSString alloc]initWithData:dataFromBase64String encoding:NSUTF8StringEncoding];
 }
