@@ -48,7 +48,6 @@
     self.tableView.rowHeight=60;
     [self initNavigationItem];
     //TODO::LOAD DATA;
-    
     MBProgressHUD *hud=[[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:hud];
     hud.labelText=@"加载...";
@@ -60,6 +59,7 @@
 }
 
 - (void)initializeTableContent {
+    _dataList=[[NSMutableArray alloc]init];
     FMResultSet *rs=[[Utility instanceShare].db executeQuery:@"select * from CollectionTable"];
     while ([rs next]) {
         Song *oneSong=[[Song alloc]init];
@@ -87,10 +87,14 @@
     });
 }
 
+
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
     BBBadgeBarButtonItem *barButton = (BBBadgeBarButtonItem *)self.navigationItem.rightBarButtonItem;
+    __weak __typeof(BBBadgeBarButtonItem*)weakBarButton=barButton;
+    [[Utility instanceShare]setYidianBadgeWidth:weakBarButton];
     [barButton registNofification];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -98,6 +102,7 @@
     [barButton removeNotification];
     [super viewDidDisappear:animated];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -182,7 +187,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    NSLog(@"insert is %ld=%ld:",_previousRow+1,indexPath.row);
     if (_previousRow >= 0 && _previousRow+1==indexPath.row) {
         CollectionBottomCell *cell=[tableView dequeueReusableCellWithIdentifier:BOTTOMCELLIDENTIFY];
         if (!cell) {
@@ -191,15 +195,13 @@
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             cell.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"song_bt_bg"]];
             //cancel collection
-            cell.oneSong=self.dataList[_previousRow];
+            cell.oneSong=_dataList[_previousRow];
             cell.oneSong.delegate=self;
-
-            
         }
         return cell;
     } else {
         CollectionViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TOPCELLIDENTIFY forIndexPath:indexPath];
-        cell.oneSong=self.dataList[indexPath.row];
+        cell.oneSong=_dataList[indexPath.row];
         cell.buttonitem=self.navigationItem.rightBarButtonItem;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor=[UIColor clearColor];
@@ -209,9 +211,7 @@
         } else {
             cell.sanjiaoxing.hidden=YES;
         }
-        
         return cell;
-        
     }
     return nil;
 }

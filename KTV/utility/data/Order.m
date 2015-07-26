@@ -10,17 +10,17 @@
 @implementation Order
 
 - (void)setNumber:(NSString *)number {
-    _number=[[Utility instanceShare] decodeBase64:number];
+    _number=[Utility decodeBase64:number];
 
 }
 
 - (void)setRcid:(NSString *)rcid {
-    _rcid=[[Utility instanceShare] decodeBase64:rcid];
+    _rcid=[Utility decodeBase64:rcid];
 
 }
 
 -  (void)setOrdername:(NSString *)ordername {
-    _ordername=[[Utility instanceShare] decodeBase64:ordername];
+    _ordername=[Utility decodeBase64:ordername];
 }
 
 @end

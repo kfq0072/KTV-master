@@ -11,5 +11,4 @@
 
 @interface CollectionBottomCell : UITableViewCell
 @property(nonatomic,weak)Song *oneSong;
-@property(nonatomic,weak)id<SongDelegate> delegate;
 @end

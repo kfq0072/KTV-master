@@ -74,7 +74,7 @@
 }
 
 - (void)initializeTableContent {
-    NSString *singerName=[[Utility instanceShare]encodeBase64:_singerName];
+    NSString *singerName=[Utility encodeBase64:_singerName];
     NSString *sqlStr= [NSString stringWithFormat:@"select * from SongTable where singer='%@' order by singer",singerName];
     FMResultSet *rs=[[Utility instanceShare].db executeQuery:sqlStr];
     while ([rs next]) {
@@ -301,6 +301,17 @@
             break;
         }
         case KMessageStyleInfo: {
+            NSIndexPath *indexPath=[NSIndexPath indexPathForItem:_previousRow inSection:0];
+            SongTopCell *cell=(SongTopCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+            cell.opened=!cell.opened;
+            if (cell.opened) {
+                cell.sanjiaoxing.hidden=NO;
+            } else {
+                cell.sanjiaoxing.hidden=YES;
+            }
+            [dataList removeObjectAtIndex:_previousRow+1];
+            [self.tableView  deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_previousRow+1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            _previousRow=-1;
             [myToast setToastWithMessage:@"此歌已收藏"  WithTimeDismiss:nil messageType:KMessageStyleInfo];
             
             break;

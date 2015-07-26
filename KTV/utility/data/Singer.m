@@ -10,18 +10,18 @@
 
 @implementation Singer
 - (void)setArea:(NSString *)area {
-    _area=[[Utility instanceShare] decodeBase64:area];
+    _area=[Utility  decodeBase64:area];
 }
 
 - (void)setPingyin:(NSString *)pingyin {
-    _pingyin=[[Utility instanceShare] decodeBase64:pingyin];
+    _pingyin=[Utility  decodeBase64:pingyin];
 }
 
 - (void)setS_bi_hua:(NSString *)s_bi_hua {
-    _s_bi_hua=[[Utility instanceShare] decodeBase64:s_bi_hua];
+    _s_bi_hua=[Utility  decodeBase64:s_bi_hua];
 }
 
 - (void)setSinger:(NSString *)singer {
-    _singer=[[Utility instanceShare] decodeBase64:singer];
+    _singer=[Utility  decodeBase64:singer];
 }
 @end

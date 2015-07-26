@@ -76,7 +76,7 @@
 
 
 - (void)initializeTableContent {
-    NSString *newSongFlag=[[Utility instanceShare]encodeBase64:@"1"];
+    NSString *newSongFlag=[Utility encodeBase64:@"1"];
     NSString *sqlStr= [NSString stringWithFormat:@"select * from SongTable where newsong='%@' limit %d",newSongFlag,pageLimint];
     FMResultSet *rs=[[Utility instanceShare].db executeQuery:sqlStr];
     while ([rs next]) {

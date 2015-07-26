@@ -53,8 +53,6 @@ static int const BBoriginY = -7;
 }
 - (void)removeNotification {
     [[NSNotificationCenter defaultCenter]removeObserver:self name:NOTIFICATION_YIDIAN_INCREASION object:nil];
-//    [[NSNotificationCenter defaultCenter]removeObserver:NOTIFICATION_YIDIAN_INCREASION];
-
 }
 
 - (void)initializer

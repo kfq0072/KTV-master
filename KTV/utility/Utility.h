@@ -91,6 +91,6 @@ typedef void(^Completed)(BOOL Completed);
 - (NSError*)save:(OperationResult)handler;
 - (void)setYidianBadgeWidth:(BBBadgeBarButtonItem*)item;
 - (void)closeDB;
-- (NSString*)encodeBase64:(NSString*)decodestr;
-- (NSString*)decodeBase64:(NSString*)encodeStr;
++ (NSString*)encodeBase64:(NSString*)decodestr;
++ (NSString*)decodeBase64:(NSString*)encodeStr;
 @end

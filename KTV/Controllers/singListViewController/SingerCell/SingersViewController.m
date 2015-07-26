@@ -55,7 +55,7 @@
 
 - (void)initializeTableContent {
     //DESC 降序
-    NSString *typeID=[[Utility instanceShare]encodeBase64:_area];
+    NSString *typeID=[Utility encodeBase64:_area];
     NSString *sqlStr= [NSString stringWithFormat:@"select * from SingerTable where area='%@' order by singer",typeID];
     FMResultSet *rs=[[Utility instanceShare].db executeQuery:sqlStr];
     while ([rs next]) {

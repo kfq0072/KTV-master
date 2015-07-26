@@ -38,7 +38,9 @@
     
     NSString*  savePath_picFull = [[savePath_PicDir stringByAppendingPathComponent:imageName]stringByAppendingPathExtension:@"png"];
     if ([manager fileExistsAtPath:savePath_picFull]) {
-        self.headImageV.image=[UIImage imageWithContentsOfFile:savePath_picFull];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.headImageV.image=[UIImage imageWithContentsOfFile:savePath_picFull];
+        });
         return;
 
     }
@@ -46,7 +48,9 @@
     if (!indicator) {
         indicator=[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         indicator.frame=CGRectMake(self.headImageV.bounds.size.width/2-15, self.headImageV.bounds.size.height/2-15, 30,30);
-        [self.headImageV addSubview:indicator];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.headImageV addSubview:indicator];
+        });
 
     }
     indicator.hidden=NO;
@@ -67,8 +71,10 @@
             }else if (connectionError != nil){
                 NSLog(@"Error happened = %@",connectionError);
             }
-            [indicator stopAnimating];
-            indicator.hidden=YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [indicator stopAnimating];
+                indicator=nil;
+            });
         }];
     }
 }

@@ -52,7 +52,7 @@
 }
 
 - (void)initializeTableContent {
-    NSString *typeID=[[Utility instanceShare]encodeBase64:@"4"];
+    NSString *typeID=[Utility encodeBase64:@"4"];
     NSString *sqlStr= [NSString stringWithFormat:@"select * from TypeTable where typeid='%@'",typeID];
     FMResultSet *rs=[[Utility instanceShare].db executeQuery:sqlStr];
     while ([rs next]) {

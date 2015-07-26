@@ -21,7 +21,7 @@
 #import "Order.h"
 #import "Song.h"
 
-@interface paiHangViewController ()<SongListSongDelegate>
+@interface paiHangViewController ()<SongDelegate>
 {
     NSInteger _previousRow;
     NSMutableArray *numbers;
@@ -77,7 +77,7 @@
     //2每条order纪录对应的song信息
     _dataSrc=[[NSMutableArray alloc]init];
     for (Order *oneOrder in  _orderArray) {
-        NSString *decoderNumber=[[Utility instanceShare]encodeBase64:oneOrder.number];
+        NSString *decoderNumber=[Utility encodeBase64:oneOrder.number];
         NSString *song_sqlStr= [NSString stringWithFormat:@"select * from SongTable where number='%@'",decoderNumber];
         FMResultSet *song_rs=[[Utility instanceShare].db executeQuery:song_sqlStr];
         while ([song_rs next]) {
@@ -148,7 +148,7 @@
             cell = [nib objectAtIndex:0];
             cell.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"song_bt_bg"]];
             cell.oneSong=_dataSrc[_previousRow];
-            cell.delegate=self;
+            cell.oneSong.delegate=self;
 
         }
         return cell;
@@ -291,7 +291,7 @@
 
 
 #pragma mark - SongBottom delegate
-- (void)addCollectionSong:(Song *)oneSong result:(KMessageStyle)result {
+- (void)addSongToCollection:(Song *)oneSong result:(KMessageStyle)result {
     [myToast dissmiss];
     switch (result) {
         case KMessageSuccess: {
@@ -320,6 +320,17 @@
             break;
         }
         case KMessageStyleInfo: {
+            NSIndexPath *indexPath=[NSIndexPath indexPathForItem:_previousRow inSection:0];
+            paiHangViewCell *cell=(paiHangViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+            cell.opened=!cell.opened;
+            if (cell.opened) {
+                cell.sanjiaoxing.hidden=NO;
+            } else {
+                cell.sanjiaoxing.hidden=YES;
+            }
+            [_dataSrc removeObjectAtIndex:_previousRow+1];
+            [self.tableView  deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_previousRow+1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            _previousRow=-1;
             [myToast setToastWithMessage:@"此歌已收藏"  WithTimeDismiss:nil messageType:KMessageStyleInfo];
             
             break;

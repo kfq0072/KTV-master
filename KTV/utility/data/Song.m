@@ -10,88 +10,96 @@
 @implementation Song
 
 -(void)setAddtime:(NSString *)addtime {
-    _addtime=[[Utility instanceShare] decodeBase64:addtime];
+    _addtime=[Utility  decodeBase64:addtime];
 }
 
 - (void)setBihua:(NSString *)bihua {
-    _bihua=[[Utility instanceShare] decodeBase64:bihua];
+    _bihua=[Utility  decodeBase64:bihua];
 }
 
 - (void)setChannel:(NSString *)channel {
-    _channel=[[Utility instanceShare] decodeBase64:channel];
+    _channel=[Utility  decodeBase64:channel];
 }
 
 - (void)setLanguage:(NSString *)language {
-    _language=[[Utility instanceShare] decodeBase64:language];
+    _language=[Utility  decodeBase64:language];
 }
 
 -(void)setMovie:(NSString *)movie {
-    _movie=[[Utility instanceShare] decodeBase64:movie];
+    _movie=[Utility  decodeBase64:movie];
 }
 
 - (void)setNewsong:(NSString *)newsong {
-    _newsong=[[Utility instanceShare] decodeBase64:newsong];
+    _newsong=[Utility  decodeBase64:newsong];
 }
 
 - (void)setNumber:(NSString *)number {
-    _number=[[Utility instanceShare] decodeBase64:number];
+    _number=[Utility  decodeBase64:number];
 }
 
 - (void)setPathid:(NSString *)pathid {
-    _pathid=[[Utility instanceShare] decodeBase64:pathid];
+    _pathid=[Utility  decodeBase64:pathid];
     
 }
 
 - (void)setSex:(NSString *)sex {
-    _sex=[[Utility instanceShare] decodeBase64:sex];
+    _sex=[Utility decodeBase64:sex];
     
 }
 
 - (void)setSinger:(NSString *)singer {
-    _singer=[[Utility instanceShare] decodeBase64:singer];
+    _singer=[Utility  decodeBase64:singer];
     
 }
 
 - (void)setSinger1:(NSString *)singer1 {
-    _singer1=[[Utility instanceShare] decodeBase64:singer1];
+    _singer1=[Utility  decodeBase64:singer1];
     
 }
 
 - (void)setSongname:(NSString *)songname {
-    _songname=[[Utility instanceShare] decodeBase64:songname];
+    _songname=[Utility  decodeBase64:songname];
     
 }
 
 - (void)setSongpiy:(NSString *)songpiy {
-    _songpiy=[[Utility instanceShare] decodeBase64:songpiy];
+    _songpiy=[Utility  decodeBase64:songpiy];
     
 }
 
 
 - (void)setSpath:(NSString *)spath {
-    _spath=[[Utility instanceShare] decodeBase64:spath];
+    _spath=[Utility  decodeBase64:spath];
     
 }
 
 - (void)setStype:(NSString *)stype {
-    _stype=[[Utility instanceShare] decodeBase64:stype];
+    _stype=[Utility  decodeBase64:stype];
     
 }
 
 - (void)setVolume:(NSString *)volume {
-    _volume=[[Utility instanceShare] decodeBase64:volume];
+    _volume=[Utility  decodeBase64:volume];
     
 }
 
 - (void)setWord:(NSString *)word {
-    _word=[[Utility instanceShare] decodeBase64:word];
+    _word=[Utility  decodeBase64:word];
 }
 
 
 
 - (void)insertSongToCollectionTable {
-    NSString *insertSql1= [NSString stringWithFormat:@"INSERT INTO CollectionTable (number,songname,singer,singer1,songpiy,word,language,volume,channel,sex,stype,newsong,movie,pathid,bihua,addtime,spath)VALUES ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",_addtime,_bihua,_channel,_language,_movie,_newsong,_number,_pathid,_sex,_singer,_singer1,_songname,_songpiy,_spath,_stype,_volume,_word];
     __weak __block typeof (self) weakSelf=self;
+    NSString *querySqlStr=[NSString stringWithFormat:@"select * from CollectionTable where number='%@'",[Utility encodeBase64:_number]];
+    FMResultSet *rs=[[Utility instanceShare].db executeQuery:querySqlStr];
+    while ([rs next]) {
+        if ([self.delegate respondsToSelector:@selector(addSongToCollection:result:)]) {
+            [self.delegate addSongToCollection:weakSelf result:KMessageStyleInfo];
+        }
+        return;
+    }
+    NSString *insertSql1= [NSString stringWithFormat:@"INSERT INTO CollectionTable (number,songname,singer,singer1,songpiy,word,language,volume,channel,sex,stype,newsong,movie,pathid,bihua,addtime,spath)VALUES ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",[Utility encodeBase64:_number],[Utility encodeBase64:_songname],[Utility encodeBase64:_singer],[Utility encodeBase64:_singer1],[Utility encodeBase64:_songpiy],[Utility encodeBase64:_word],[Utility encodeBase64:_language],[Utility encodeBase64:_volume],[Utility encodeBase64:_channel],[Utility encodeBase64:_sex],[Utility encodeBase64:_stype],[Utility encodeBase64:_newsong],[Utility encodeBase64:_movie],[Utility encodeBase64:_pathid],[Utility encodeBase64:_bihua],[Utility encodeBase64:_addtime],[Utility encodeBase64:_spath]];
     if (![[Utility instanceShare].db executeUpdate:insertSql1]) {
         NSLog(@"插入失败1");
         if ([self.delegate respondsToSelector:@selector(addSongToCollection:result:)]) {
@@ -105,10 +113,10 @@
 }
 
 - (void)deleteSongFromCollectionTable {
-    NSString *insertSql1= [NSString stringWithFormat:@"delete * from CollectionTable where number='%@'",_number];
+    NSString *insertSql1= [NSString stringWithFormat:@"delete from CollectionTable where number='%@'",[Utility encodeBase64:_number]];
     __weak __block typeof (self) weakSelf=self;
     if (![[Utility instanceShare].db executeUpdate:insertSql1]) {
-        NSLog(@"插入失败1");
+        NSLog(@"取消收藏失败");
         if ([self.delegate respondsToSelector:@selector(deleteCollectionSong:result:)]) {
             [self.delegate deleteCollectionSong:weakSelf result:KMessageWarning];
         }
