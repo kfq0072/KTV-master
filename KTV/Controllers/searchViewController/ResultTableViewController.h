@@ -14,7 +14,14 @@
 - (void)searchDone;
 @end
 
+enum selectSearchType{
+    searchAll,
+    searchSong,
+    searchSinger
+};
+
 @interface ResultTableViewController : UITableViewController<UISearchResultsUpdating,UISearchBarDelegate,SelectViewOnSelectedDelegate>
 @property (nonatomic,weak) id<searchSongDelegate>delegate;
-@property (nonatomic,assign)NSInteger searchSelectIndex;
+@property (nonatomic,assign)enum selectSearchType searchSelectIndex;
+
 @end

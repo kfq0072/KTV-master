@@ -25,6 +25,7 @@
 }
 @property (nonatomic,strong)NSIndexPath *selectedIndexPath;
 @property (nonatomic,strong)NSMutableArray *dataList;
+@property (nonatomic,strong)FMDatabase *searchDb;
 
 @end
 
@@ -37,6 +38,8 @@
     _searchSelectIndex = 0;
     _dataList = [[NSMutableArray alloc] init];
     [self initializeSearchController];
+    _searchDb = [Utility instanceShare].db;
+    [_searchDb open];
     
 }
 
@@ -114,11 +117,11 @@
                     return singerCell;
                 }
             }
-        }else {//查询单个
-            if ([self.dataList[indexPath.section] isKindOfClass:[Song class]]) {
+        }else if(_searchSelectIndex == searchSong) {//查询单个
                 SearchTableCell *cell = [tableView dequeueReusableCellWithIdentifier:TOPCELLIDENTIFY forIndexPath:indexPath];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.oneSong=self.dataList[indexPath.row];
+//                cell.oneSong=self.dataList[indexPath.row];
+            cell.songName = self.dataList[indexPath.row];
                 cell.backgroundColor=[UIColor clearColor];
                 if (cell.opened) {
                     cell.sanjiaoxing.hidden=NO;
@@ -126,7 +129,10 @@
                     cell.sanjiaoxing.hidden=YES;
                 }
                 return cell;
-            }else if ([self.dataList[indexPath.section] isKindOfClass:[Singer class]]) {
+        
+            
+        }else {
+           
                 SingsTableViewCell *singerCell = [tableView dequeueReusableCellWithIdentifier:SINGERCELLIDENTIFY];
                 if (!singerCell) {
                     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:SINGERCELLIDENTIFY owner:self options:nil];
@@ -134,7 +140,7 @@
                     singerCell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"song_bt_bg"]];
                     singerCell.singer = self.dataList[indexPath.row];
                     return singerCell;
-                }
+                
             }
         }
     }
@@ -244,6 +250,43 @@
 
 
 - (void)initializeTableContent:(NSString*)searchStr {
+    
+     NSString *enCodeSearchStr = [[Utility instanceShare] encodeBase64:searchStr];
+    NSString *sql = nil;
+      [self.dataList removeAllObjects];
+    if (_searchSelectIndex == searchAll) {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE songpiy='%@'",@"SongTable"];
+        
+//        select * from student inner join course on student.ID=course.ID
+        
+    }else if (_searchSelectIndex == searchSong){
+       
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE songpiy='%@'",@"SongTable",enCodeSearchStr];
+        FMResultSet * rs = [_searchDb executeQuery:sql];
+        while ([rs next]) {
+            NSString *codeSongName = [rs stringForColumn:@"songname"];
+             NSString *songName= [[Utility instanceShare] decodeBase64:codeSongName];
+          
+            [self.dataList addObject:songName];
+           
+        }
+        [_searchDb close];
+        
+    }else {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE pingyin='%@'",@"SingerTable",enCodeSearchStr];
+        FMResultSet * rs = [_searchDb executeQuery:sql];
+        while ([rs next]) {
+            NSString *codeSingerName = [rs stringForColumn:@"singer"];
+            NSString *singerName= [[Utility instanceShare] decodeBase64:codeSingerName];
+            [self.dataList addObject:singerName];
+        }
+        [_searchDb close];
+        
+    }
+     NSLog(@"---: %@",self.dataList);
+    
+    [self.tableView reloadData];
+    
 //    if (_searchSelectIndex == 0) {
 //        [Song async:^id(NSManagedObjectContext *ctx, NSString *className) {
 //            NSFetchRequest *fetchRequest=[[NSFetchRequest alloc]initWithEntityName:@"Song"];
@@ -406,13 +449,13 @@
     NSLog(@"%lu",(unsigned long)index);
     switch (index) {
         case 0:
-            _searchSelectIndex = 0;
+            _searchSelectIndex = searchAll;
             break;
         case 1:
-            _searchSelectIndex = 1;
+            _searchSelectIndex = searchSong;
             break;
         case 2:
-            _searchSelectIndex = 2;
+            _searchSelectIndex = searchSinger;
             break;
         default:
             break;
