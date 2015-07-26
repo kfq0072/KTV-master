@@ -19,6 +19,8 @@
 #import "SongBottomCell.h"
 #import "MBProgressHUD.h"
 #import "SingsTableViewCell.h"
+#define SONGTABLE @"SongTable"
+#define SINGERTABLE @"SingerTable"
 @interface ResultTableViewController ()<UITableViewDataSource,UITableViewDelegate,searchSongDelegate,UISearchBarDelegate> {
     NSInteger _previousRow;
     BOOL canSearch;
@@ -121,7 +123,7 @@
                 SearchTableCell *cell = [tableView dequeueReusableCellWithIdentifier:TOPCELLIDENTIFY forIndexPath:indexPath];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //                cell.oneSong=self.dataList[indexPath.row];
-            cell.songName = self.dataList[indexPath.row];
+            cell.songName.text = self.dataList[indexPath.row];
                 cell.backgroundColor=[UIColor clearColor];
                 if (cell.opened) {
                     cell.sanjiaoxing.hidden=NO;
@@ -226,6 +228,7 @@
         }
     } else {
         if ([self.delegate respondsToSelector:@selector(searchDone)]) {
+            [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
             [self.delegate searchDone];
         }
     }
@@ -248,44 +251,33 @@
     
 }
 
+#pragma mark - sql method
+- (void)searchData:(NSString*)tableName :(NSString*)conditionColumn :(NSString*)searchStr :(NSString*)column {
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@='%@'",tableName,conditionColumn,searchStr];
+    FMResultSet *rs = [_searchDb executeQuery:sql];
+    while ([rs next]) {
+        NSString *data= [Utility  decodeBase64:[rs stringForColumn:column]];
+        [self.dataList addObject:data];
+    }
+}
+
 
 - (void)initializeTableContent:(NSString*)searchStr {
-    
      NSString *enCodeSearchStr = [Utility encodeBase64:searchStr];
-    NSString *sql = nil;
-      [self.dataList removeAllObjects];
+    [self.dataList removeAllObjects];
+//    [_searchDb open];
     if (_searchSelectIndex == searchAll) {
-        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE songpiy='%@'",@"SongTable"];
-        
-//        select * from student inner join course on student.ID=course.ID
+        [self searchData:SONGTABLE :@"songpiy" :enCodeSearchStr :@"songname"];
+        [self searchData:SINGERTABLE :@"pingyin" :enCodeSearchStr :@"singer"];
         
     }else if (_searchSelectIndex == searchSong){
-       
-        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE songpiy='%@'",@"SongTable",enCodeSearchStr];
-        FMResultSet * rs = [_searchDb executeQuery:sql];
-        while ([rs next]) {
-            NSString *codeSongName = [rs stringForColumn:@"songname"];
-             NSString *songName= [Utility  decodeBase64:codeSongName];
-          
-            [self.dataList addObject:songName];
-           
-        }
-        [_searchDb close];
-        
+        [self searchData:SONGTABLE :@"songpiy" :enCodeSearchStr :@"songname"];
     }else {
-        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE pingyin='%@'",@"SingerTable",enCodeSearchStr];
-        FMResultSet * rs = [_searchDb executeQuery:sql];
-        while ([rs next]) {
-            NSString *codeSingerName = [rs stringForColumn:@"singer"];
-            NSString *singerName= [Utility decodeBase64:codeSingerName];
-            [self.dataList addObject:singerName];
-        }
-        [_searchDb close];
-        
+        [self searchData:SINGERTABLE :@"pingyin" :enCodeSearchStr :@"singer"];
     }
      NSLog(@"---: %@",self.dataList);
-    
-    [self.tableView reloadData];
+    [self reloadData];
+//    [self.tableView reloadData];
     
 //    if (_searchSelectIndex == 0) {
 //        [Song async:^id(NSManagedObjectContext *ctx, NSString *className) {
