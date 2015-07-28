@@ -281,7 +281,8 @@
 
 #pragma mark - sql method
 - (void)searchData:(NSString*)tableName :(NSString*)conditionColumn :(NSString*)searchStr :(NSString*)column {
-    NSString *sql = [NSString stringWithFormat:@"SELECT %@ FROM %@ WHERE %@='%@'",column,tableName,conditionColumn,searchStr];
+    NSString *sql = [NSString stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ LIKE '%@'",column,tableName,conditionColumn,[NSString stringWithFormat:@"%@%@",searchStr,@"%"]];
+    NSLog(@"%@",sql);
     FMResultSet *rs = [_searchDb executeQuery:sql];
     if (_searchSelectIndex == searchAll) {
         if ([tableName isEqualToString:SONGTABLE]) {
@@ -306,6 +307,7 @@
 
 - (void)initializeTableContent:(NSString*)searchStr {
      NSString *enCodeSearchStr = [Utility encodeBase64:searchStr];
+    NSString *dec = [Utility decodeBase64:@"M1Q="];
     [self.dataList removeAllObjects];
     [self.singerList removeAllObjects];
     if (_searchSelectIndex == searchAll) {
